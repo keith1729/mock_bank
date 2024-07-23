@@ -5,6 +5,10 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
+import pytz
+import time
+import random
+
 
 # This code is from the love-sandwiches project 
 SCOPE = [
@@ -18,22 +22,85 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('bank_account')
 
+
+logo = '''
+ /$$$$$$$$ /$$                       /$$$$$$$                      /$$      
+|__  $$__/| $$                      | $$__  $$                    | $$      
+   | $$   | $$$$$$$   /$$$$$$       | $$  \\ $$  /$$$$$$  /$$$$$$$ | $$   /$$
+   | $$   | $$__  $$ /$$__  $$      | $$$$$$$  |____  $$| $$__  $$| $$  /$$/
+   | $$   | $$  \\ $$| $$$$$$$$      | $$__  $$  /$$$$$$$| $$  \\ $$| $$$$$$/ 
+   | $$   | $$  | $$| $$_____/      | $$  \\ $$ /$$__  $$| $$  | $$| $$_  $$ 
+   | $$   | $$  | $$|  $$$$$$$      | $$$$$$$/|  $$$$$$$| $$  | $$| $$ \\  $$
+   |__/   |__/  |__/ \\_______/      |_______/  \\_______/|__/  |__/|__/  \\__/
+'''
+
+
 accounts = SHEET.worksheet('accounts')
-accounts_data = accounts.get_all_values()
+# accounts_data = accounts.get_all_values()
 
 transactions = SHEET.worksheet('transactions')
-transactions_data = transactions.get_all_values()
+# transactions_data = transactions.get_all_values()
 
-# print(accounts_data)
-# print(transactions_data)
+
+def current_time_date():
+    '''
+    Generate the current date and time
+    '''
+    local_tz = pytz.timezone('Europe/Dublin')
+    current_tz = datetime.now(local_tz).strftime('%H:%M:%S, %d-%m-%Y')
+    return current_tz
+
+
+def create_new_acc():
+    '''
+    Create a new account and update accounts worksheet
+    '''
+
+    print('\nPlease enter a username:')
+    username = input('\n>>')
+    account = "AC-" + str(random.randint(1000000, 9999999))
+    pin = str(random.randint(1000, 9999))
+    balance = str(0)
+
+    accounts_worksheet = SHEET.worksheet('accounts')
+    accounts_worksheet.append_row([username, account, pin, balance])
+
+    print(f'\nThank you {username} for creating an account with The Bank!')
+    print(f'\nYour new account number is ({account})')
+    print(f'\nYour new pin number is ({pin})\n')
+
+
+def login():
+    '''
+    Login for an existing account holder
+    '''
+
+    print(logo)
+
+    print('\nPlease enter your username:')
+    username_entered = input('\n>>')
+
+    print('\nPlease enter your pin:')
+    pin_entered = str(input('\n>>'))
+
+    stored_usernames = accounts.find(username_entered, in_column=1)
+    stored_pins = accounts.find(pin_entered, in_column=3)
+
 
 def welcome():
-    """
-    Welcome message that shows the current date and time
-    """
-    current = datetime.now().strftime('%H:%M:%S %d-%m-%Y')
-    print(f'Welcome to the Bank Account: {current}')
-    print('Would you like to [1]login or [2]create a new account?')
+    '''
+    Welcome page and offers user the ability to login or create a new account
+    '''
 
+    print(logo)
+    print(f'\nWould you like to [1] login or [2] create a new account? ({current_time_date()})')
+    option = int(input('\n>>'))
+
+    if option == 1:
+        login()
+    elif option == 2:
+        create_new_acc()
+    else:
+        welcome()
 
 welcome()
