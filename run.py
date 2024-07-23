@@ -86,6 +86,12 @@ def login():
     stored_usernames = accounts.find(username_entered, in_column=1)
     stored_pins = accounts.find(pin_entered, in_column=3)
 
+    print(stored_usernames, stored_usernames.row)
+    print(stored_pins, stored_pins.row)
+
+    if stored_usernames.row == stored_pins.row:
+        print('login in')
+
 
 def welcome():
     '''
@@ -94,7 +100,13 @@ def welcome():
 
     print(logo)
     print(f'\nWould you like to [1] login or [2] create a new account? ({current_time_date()})')
-    option = int(input('\n>>'))
+    while True:
+        option = input('\n>>')
+        if option.isnumeric():
+            break
+        print('Enter 1 or 2')
+    option = int(option)
+        
 
     if option == 1:
         login()
