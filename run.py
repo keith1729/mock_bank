@@ -82,8 +82,12 @@ def login():
     print('\nPlease enter your username:')
     username_entered = input('\n>> ')
 
+    print(username_entered)
+
     print('\nPlease enter your pin:')
     pin_entered = input('\n>> ')
+
+    # print(username_entered.row)
 
     stored_usernames = accounts_worksheet.find(username_entered, in_column=1)
     stored_pins = accounts_worksheet.find(pin_entered, in_column=3)
@@ -98,6 +102,7 @@ def login():
     else:
         print('\nInvalid username or PIN. Please try again...')
         welcome()  
+    
 
 
 def options():
@@ -124,7 +129,7 @@ def options():
         options()
 
 
-def deposit(username, deposit_amount):
+def deposit():
     '''
     Deposits a positive value into the account
     '''
@@ -138,10 +143,9 @@ def deposit(username, deposit_amount):
     else:
         print('\nThank you for the deposit, updating your balance...')
 
-        balance = accounts_worksheet
+        
 
-        # new_balance = float(gets_balance) + float(deposit)
-        # accounts_worksheet.append_row([balance])
+        
 
 def withdraw():
     print('Withdraw function')
