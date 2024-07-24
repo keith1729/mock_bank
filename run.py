@@ -10,7 +10,7 @@ import time
 import random
 
 
-# This code is from the love-sandwiches project 
+# Code taken from the love-sandwiches project 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -20,7 +20,7 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('bank_account')
+SHEET = GSPREAD_CLIENT.open('the_bank')
 
 
 logo = '''
@@ -35,10 +35,10 @@ logo = '''
 '''
 
 
-accounts = SHEET.worksheet('accounts')
+accounts_worksheet = SHEET.worksheet('accounts')
 # accounts_data = accounts.get_all_values()
 
-transactions = SHEET.worksheet('transactions')
+# transactions = SHEET.worksheet('transactions')
 # transactions_data = transactions.get_all_values()
 
 
@@ -55,9 +55,8 @@ def create_new_acc():
     '''
     Create a new account and update accounts worksheet
     '''
-
     print('\nPlease enter a username:')
-    username = input('\n>>')
+    username = input('\n>> ')
     account = "AC-" + str(random.randint(1000000, 9999999))
     pin = str(random.randint(1000, 9999))
     balance = str(0)
@@ -69,29 +68,87 @@ def create_new_acc():
     print(f'\nYour new account number is ({account})')
     print(f'\nYour new pin number is ({pin})\n')
 
+    login()
+
 
 def login():
     '''
     Login for an existing account holder
     '''
-
     print(logo)
 
+    print('\nPlease login with username and pin...')
+
     print('\nPlease enter your username:')
-    username_entered = input('\n>>')
+    username_entered = input('\n>> ')
 
     print('\nPlease enter your pin:')
-    pin_entered = str(input('\n>>'))
+    pin_entered = input('\n>> ')
 
-    stored_usernames = accounts.find(username_entered, in_column=1)
-    stored_pins = accounts.find(pin_entered, in_column=3)
+    stored_usernames = accounts_worksheet.find(username_entered, in_column=1)
+    stored_pins = accounts_worksheet.find(pin_entered, in_column=3)
 
-    print(stored_usernames, stored_usernames.row)
-    print(stored_pins, stored_pins.row)
+    if stored_usernames and stored_pins:
+        if stored_usernames.row == stored_pins.row:
+            print('\nLogin successful!')
+            options()  
+        else:
+            print('\nLogin unsuccessful. Please try again...')
+            welcome() 
+    else:
+        print('\nInvalid username or PIN. Please try again...')
+        welcome()  
 
-    if stored_usernames.row == stored_pins.row:
-        print('login in')
 
+def options():
+    '''
+    Give options to the logged in user 
+    '''
+    print(logo)
+    print('Would you like to [1] Deposit, [2] Withdraw or [3] see Account Details:')
+    while True:
+        option = input('\n>> ')
+        if option.isnumeric():
+            break
+        print('Enter 1 or 2 or 3')
+    option = int(option)
+
+    if option == 1:
+        deposit()
+    elif option == 2:
+        withdraw()
+    elif option == 3:
+        account_details()
+    else:
+        print('Please choose options [1], [2] or [3]')
+        options()
+
+
+def deposit(username, deposit_amount):
+    '''
+    Deposits a positive value into the account
+    '''
+    print(logo)
+    print('\nPlease enter an amount to deposit:')
+    deposit_amount = int(input('\n>> '))
+    
+    if deposit_amount <= 0:
+        print('\nYou cannot deposit a negative value or a zero value!')
+        deposit()
+    else:
+        print('\nThank you for the deposit, updating your balance...')
+
+        balance = accounts_worksheet
+
+        # new_balance = float(gets_balance) + float(deposit)
+        # accounts_worksheet.append_row([balance])
+
+def withdraw():
+    print('Withdraw function')
+
+
+def account_details():
+    print('Account Details function')
 
 def welcome():
     '''
@@ -101,10 +158,10 @@ def welcome():
     print(logo)
     print(f'\nWould you like to [1] login or [2] create a new account? ({current_time_date()})')
     while True:
-        option = input('\n>>')
+        option = input('\n>> ')
         if option.isnumeric():
             break
-        print('Enter 1 or 2')
+        print('Please enter [1] for login or [2] for create new account...')
     option = int(option)
         
 
