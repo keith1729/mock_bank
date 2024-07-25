@@ -35,11 +35,157 @@ logo = '''
 '''
 
 
-accounts_worksheet = SHEET.worksheet('accounts')
+# accounts_worksheet = SHEET.worksheet('accounts')
 # accounts_data = accounts.get_all_values()
 
 # transactions = SHEET.worksheet('transactions')
 # transactions_data = transactions.get_all_values()
+
+
+# def current_time_date():
+#     '''
+#     Generate the current date and time
+#     '''
+#     local_tz = pytz.timezone('Europe/Dublin')
+#     current_tz = datetime.now(local_tz).strftime('%H:%M:%S, %d-%m-%Y')
+#     return current_tz
+
+
+# def create_new_acc():
+#     '''
+#     Create a new account and update accounts worksheet
+#     '''
+#     print('\nPlease enter a username:')
+#     username = input('\n>> ')
+#     account = "AC-" + str(random.randint(1000000, 9999999))
+#     pin = str(random.randint(1000, 9999))
+#     balance = str(0)
+
+#     accounts_worksheet = SHEET.worksheet('accounts')
+#     accounts_worksheet.append_row([username, account, pin, balance])
+
+#     print(f'\nThank you {username} for creating an account with The Bank!')
+#     print(f'\nYour new account number is ({account})')
+#     print(f'\nYour new pin number is ({pin})\n')
+
+#     login()
+
+
+# def login():
+#     '''
+#     Login for an existing account holder
+#     '''
+#     print(logo)
+
+#     print('\nPlease login with username and pin...')
+
+#     print('\nPlease enter your username:')
+#     username_entered = input('\n>> ')
+
+#     print(username_entered)
+
+#     print('\nPlease enter your pin:')
+#     pin_entered = input('\n>> ')
+
+#     # print(username_entered.row)
+
+#     stored_usernames = accounts_worksheet.find(username_entered, in_column=1)
+#     stored_pins = accounts_worksheet.find(pin_entered, in_column=3)
+
+#     if stored_usernames and stored_pins:
+#         if stored_usernames.row == stored_pins.row:
+#             print('\nLogin successful!')
+#             options()  
+#         else:
+#             print('\nLogin unsuccessful. Please try again...')
+#             welcome() 
+#     else:
+#         print('\nInvalid username or PIN. Please try again...')
+#         welcome()  
+    
+
+
+# def options():
+#     '''
+#     Give options to the logged in user 
+#     '''
+#     print(logo)
+#     print('Would you like to [1] Deposit, [2] Withdraw or [3] see Account Details:')
+#     while True:
+#         option = input('\n>> ')
+#         if option.isnumeric():
+#             break
+#         print('Enter 1 or 2 or 3')
+#     option = int(option)
+
+#     if option == 1:
+#         deposit()
+#     elif option == 2:
+#         withdraw()
+#     elif option == 3:
+#         account_details()
+#     else:
+#         print('Please choose options [1], [2] or [3]')
+#         options()
+
+
+# def deposit():
+#     '''
+#     Deposits a positive value into the account
+#     '''
+#     print(logo)
+#     print('\nPlease enter an amount to deposit:')
+#     deposit_amount = int(input('\n>> '))
+    
+#     if deposit_amount <= 0:
+#         print('\nYou cannot deposit a negative value or a zero value!')
+#         deposit()
+#     else:
+#         print('\nThank you for the deposit, updating your balance...')
+
+        
+
+        
+
+# def withdraw():
+#     print('Withdraw function')
+
+
+# def account_details():
+#     print('Account Details function')
+
+
+class BankAccount():
+
+    def __init__(self, username, account, pin, balance = 0):
+        self.username = username
+        self.account = account
+        self.pin = pin
+        self.balance = balance
+
+
+    def deposit(self, amount):
+        self.balance += amount
+
+
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+        else:
+            print('You have insufficient funds!')
+
+
+    def generate_acc_num():
+        account_num = "AC-" + str(random.randint(1000000, 9999999))
+        return account_num
+
+
+    def generate_pin_num():
+        pin_num = str(random.randint(1000, 9999))
+        return pin_num
+
+
+accounts_worksheet = SHEET.worksheet('accounts')
 
 
 def current_time_date():
@@ -57,15 +203,15 @@ def create_new_acc():
     '''
     print('\nPlease enter a username:')
     username = input('\n>> ')
-    account = "AC-" + str(random.randint(1000000, 9999999))
+    account_number = "AC-" + str(random.randint(1000000, 9999999))
     pin = str(random.randint(1000, 9999))
     balance = str(0)
 
     accounts_worksheet = SHEET.worksheet('accounts')
-    accounts_worksheet.append_row([username, account, pin, balance])
+    accounts_worksheet.append_row([username, account_number, pin, balance])
 
     print(f'\nThank you {username} for creating an account with The Bank!')
-    print(f'\nYour new account number is ({account})')
+    print(f'\nYour new account number is ({account_number})')
     print(f'\nYour new pin number is ({pin})\n')
 
     login()
@@ -102,7 +248,6 @@ def login():
     else:
         print('\nInvalid username or PIN. Please try again...')
         welcome()  
-    
 
 
 def options():
@@ -143,16 +288,8 @@ def deposit():
     else:
         print('\nThank you for the deposit, updating your balance...')
 
-        
+    balance += deposit_amount
 
-        
-
-def withdraw():
-    print('Withdraw function')
-
-
-def account_details():
-    print('Account Details function')
 
 def welcome():
     '''
@@ -177,3 +314,5 @@ def welcome():
         welcome()
 
 welcome()
+
+
