@@ -325,6 +325,28 @@ def current_time_date():
     return current_tz
 
 
+class BankAccount:
+    def __init__(self, username, account_number, pin_number, balance = str(0)):
+        self.username = username
+        self.account_number = account_number
+        self.pin_number = pin_number
+        self.balance = balance
+    
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            return self.balance
+        else:
+            raise ValueError('Deposit amount cannot be a negative or zero value!')
+
+    def withdraw(self, amount):
+        if 0 > amount <= self.balance:
+            self.balance -= amount
+            return self.balance
+        else:
+            raise ValueError('Withdrawal amount cannot be a negative value or above your balance!')
+
+
 def welcome():
 
     print(logo)
@@ -338,15 +360,12 @@ def welcome():
     elif login_option == 2:
         create_new_acc()
     else:
-        print('Please choose option [1] Login or [2] Create New Account')
+        ValueError('Please choose option [1] Login or [2] Create New Account')
         welcome()
 
 
 def login():
     print('This is the login function...')
-
-
-balance = str(0)
 
 
 def create_new_acc():
@@ -358,12 +377,16 @@ def create_new_acc():
     account_number = 'AC-' + str(random.randint(1000000, 9999999))
     pin_number = str(random.randint(1000, 9999))
 
-    print(f'\nAccount Number: {account_number}')
-    print(f'Pin Number: {pin_number}')
-    print(f'Balance: {balance}')
+    balance = 0
+
+    user_account = BankAccount(username = username_entered, account_number = account_number, pin_number = pin_number, balance = balance)
+    print(f'\nUsername: {user_account.username}')
+    print(f'\nAccount Number: {user_account.account_number}')
+    print(f'\nPin Number: {user_account.pin_number}')
+    print(f'\nBalance: {user_account.balance}')
 
     accounts_worksheet = SHEET.worksheet('accounts')
-    accounts_worksheet.append_row([username, account, pin, balance])
+    accounts_worksheet.append_row([user_account.username, user_account.account_number, user_account.pin_number, user_account.balance])
 
 
     
