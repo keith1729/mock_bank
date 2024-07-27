@@ -403,7 +403,7 @@ def login():
 def create_new_acc():
 
     print('\nTo create a new account please enter a username:')
-    username_entered = input('\n>> ')
+    username = input('\n>> ')
 
     print('\nGenerating account number and pin...')
     account_number = 'AC-' + str(random.randint(1000000, 9999999))
@@ -411,7 +411,7 @@ def create_new_acc():
 
     balance = 0
 
-    user_account = BankAccount(username = username_entered, account_number = account_number, pin_number = pin_number, balance = balance)
+    user_account = BankAccount(username = username, account_number = account_number, pin_number = pin_number, balance = balance)
     print(f'\nUsername: {user_account.username}')
     print(f'\nAccount Number: {user_account.account_number}')
     print(f'\nPin Number: {user_account.pin_number}')
