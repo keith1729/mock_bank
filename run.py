@@ -326,7 +326,7 @@ def current_time_date():
 
 
 class BankAccount:
-    def __init__(self, username, account_number, pin_number, balance = str(0)):
+    def __init__(self, username, account_number, pin_number, balance):
         self.username = username
         self.account_number = account_number
         self.pin_number = pin_number
@@ -365,8 +365,40 @@ def welcome():
 
 
 def login():
-    print('This is the login function...')
 
+    print('\nPlease login with Username and Pin!')
+    username_entered = input('\nEnter Username: ')
+    pin_entered = input('\nEnter Pin: ')
+
+# def login():
+#     '''
+#     Login for an existing account holder
+#     '''
+#     print(logo)
+
+#     print('\nPlease login with username and pin...')
+
+#     print('\nPlease enter your username:')
+#     username_entered = input('\n>> ')
+
+#     print('\nPlease enter your pin:')
+#     pin_entered = input('\n>> ')
+
+#     # print(username_entered.row)
+
+#     stored_usernames = accounts_worksheet.find(username_entered, in_column=1)
+#     stored_pins = accounts_worksheet.find(pin_entered, in_column=3)
+
+#     if stored_usernames and stored_pins:
+#         if stored_usernames.row == stored_pins.row:
+#             print('\nLogin successful!')
+#             options()  
+#         else:
+#             print('\nLogin unsuccessful. Please try again...')
+#             welcome() 
+#     else:
+#         print('\nInvalid username or PIN. Please try again...')
+#         welcome()  
 
 def create_new_acc():
 
@@ -383,7 +415,7 @@ def create_new_acc():
     print(f'\nUsername: {user_account.username}')
     print(f'\nAccount Number: {user_account.account_number}')
     print(f'\nPin Number: {user_account.pin_number}')
-    print(f'\nBalance: {user_account.balance}')
+    print(f'\nBalance: {user_account.balance}\n')
 
     accounts_worksheet = SHEET.worksheet('accounts')
     accounts_worksheet.append_row([user_account.username, user_account.account_number, user_account.pin_number, user_account.balance])
