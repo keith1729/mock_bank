@@ -220,6 +220,10 @@ def options(user_account):
         proceed(user_account)
     elif option == 2:
         time.sleep(2)
+        print(f'''{Fore.YELLOW}{logo}''')
+        time.sleep(2)
+        characters(f'''{Fore.WHITE}\nTo withdraw from {user_account.username}'s account
+        ''')
         withdraw_amount = float(input('\nEnter your withdraw amount: €'))
         user_account.withdraw(withdraw_amount)
         time.sleep(3)
@@ -230,15 +234,19 @@ def options(user_account):
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
         proceed(user_account)
     elif option == 3:
+
         time.sleep(2)
-        characters(f'''
+        print(f'''{Fore.YELLOW}{logo}''')
+        time.sleep(2)
+        characters(f'''{Fore.WHITE}
     {user_account.username} your Account Details are as follows:
-        
+
     Username: {user_account.username}
     Account Number: {user_account.account_number}
     Pin: {user_account.pin}
     Current Balance: €{user_account.balance}
-        ''')
+    ''')
+
         time.sleep(2)
         proceed(user_account)
     elif option == 4:
