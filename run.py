@@ -52,6 +52,7 @@ import time
 import random
 import sys
 from colorama import Fore
+import os
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -88,6 +89,9 @@ def characters(text):
         sys.stdout.flush()
         time.sleep(0.01)
 
+def clear_screen():
+    os.system('clear')
+
 class BankAccount:
 
     def __init__(self, username, account_number, pin, balance):
@@ -112,6 +116,7 @@ class BankAccount:
 
 def create_new_acc():
 
+    clear_screen()
     time.sleep(2)
     print(f'''{Fore.YELLOW}{logo}''')
     time.sleep(2)
@@ -149,6 +154,7 @@ def create_new_acc():
 
 def login():
 
+    clear_screen()
     time.sleep(2)
     print(f'''{Fore.YELLOW}{logo}''')
     time.sleep(2)
@@ -188,6 +194,7 @@ def login():
 
 def options(user_account):
 
+    clear_screen()
     time.sleep(2)
     print(f'''{Fore.YELLOW}{logo}''')
     time.sleep(2)
@@ -205,6 +212,7 @@ def options(user_account):
     option = int(input('\n>> '))
 
     if option == 1:
+        clear_screen()
         time.sleep(2)
         print(f'''{Fore.YELLOW}{logo}''')
         time.sleep(2)
@@ -225,6 +233,7 @@ def options(user_account):
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
         proceed(user_account)
     elif option == 2:
+        clear_screen()
         time.sleep(2)
         print(f'''{Fore.YELLOW}{logo}''')
         time.sleep(2)
@@ -245,6 +254,7 @@ def options(user_account):
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
         proceed(user_account)
     elif option == 3:
+        clear_screen()
         time.sleep(2)
         print(f'''{Fore.YELLOW}{logo}''')
         time.sleep(2)
@@ -259,11 +269,15 @@ def options(user_account):
         time.sleep(2)
         proceed(user_account)
     elif option == 4:
+        clear_screen()
+        time.sleep(2)
+        print(f'''{Fore.YELLOW}{logo}''')
         time.sleep(2)
         characters(f'''
     Thank you {user_account.username} for using The Bank!
         
         ''')
+        time.sleep(6)
         welcome()
     else:
         raise ValueError('Please enter a number [1-4]')
@@ -271,11 +285,11 @@ def options(user_account):
 def proceed(user_account):
 
     characters('''
-    Would you like to continue?
+    Would you like to continue to your options page?
 
-    Please choose one of the following options:
+    Please choose one of the following:
 
-    [1] Continue
+    [1] Options
     [2] Exit
     ''')
     
@@ -284,10 +298,16 @@ def proceed(user_account):
     if option == 1:
         options(user_account)
     elif option ==2:
+        characters(f'''
+    Thank you {user_account.username} for using The Bank!
+        
+        ''')
+        time.sleep(6)
         welcome()
 
 def welcome():
 
+    clear_screen()
     characters(f'''{Fore.YELLOW}{logo}''')
     time.sleep(2)
     characters(f'''{Fore.WHITE}
