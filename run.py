@@ -87,11 +87,10 @@ def current_time_date():
     return current_tz
 
 def characters(text):
-    """ Delays the output of characters on terminal by some milliseconds"""
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
-        time.sleep(0.02)
+        time.sleep(0.015)
 
 class BankAccount:
 
@@ -117,20 +116,35 @@ class BankAccount:
 
 def create_new_acc():
 
-    print('\nTo create a new account please enter a Username:')
+    time.sleep(2)
+    characters('''
+    To create a new account please enter a Username:
+    ''')
+    # print('\nTo create a new account please enter a Username:')
     username = input('\n>> ')
 
-    print(f'\nGenerating new Account Number and new Pin for {username}!')
+    time.sleep(3)
+    characters(f'''
+    Generating new Account Number and new Pin for {username}...
+    ''')
+    # print(f'\nGenerating new Account Number and new Pin for {username}!')
     account_number = 'AC-' + str(random.randint(1000000, 9999999))
     pin = str(random.randint(1000, 9999))
 
     balance = 0
 
     user_account = BankAccount(username = username, account_number = account_number, pin = pin, balance = balance)
-    print(f'\nUsername: {user_account.username}')
-    print(f'Account Number: {user_account.account_number}')
-    print(f'Pin: {user_account.pin}')
-    print(f'Balance: {user_account.balance}\n')
+    time.sleep(6)
+    characters(f'''
+    Username: {user_account.username}
+    Account Number: {user_account.account_number}
+    Pin: {user_account.pin}
+    Balance: {user_account.balance}
+    ''')
+    # print(f'\nUsername: {user_account.username}')
+    # print(f'Account Number: {user_account.account_number}')
+    # print(f'Pin: {user_account.pin}')
+    # print(f'Balance: {user_account.balance}\n')
 
     accounts_worksheet = SHEET.worksheet('accounts')
     accounts_worksheet.append_row([user_account.username, user_account.account_number, user_account.pin, user_account.balance])
@@ -162,7 +176,7 @@ def login():
 
         if username_entered == username_entered_row_username and pin_entered == username_entered_row_pin:
             user_account = BankAccount(username = username_entered_row_username, account_number = username_entered_row_account_number, pin = username_entered_row_pin, balance = username_entered_row_balance)
-            time.sleep(8)
+            time.sleep(6)
             print('\nLogin Successful!')
            
         else:
@@ -211,24 +225,34 @@ def options(user_account):
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
         proceed(user_account)
     elif option == 3:
-        print('\nYour Account Details are as follows:')
-        print(f'\nUsername: {user_account.username}')        
-        print(f'Account Number: {user_account.account_number}')
-        print(f'Pin: {user_account.pin}')
-        print(f'Current Balance: €{user_account.balance}\n')
+        time.sleep(2)
+        characters(f'''
+    {user_account.username} your Account Details are as follows:
+        
+    Username: {user_account.username}
+    Account Number: {user_account.account_number}
+    Pin: {user_account.pin}
+    Current Balance: €{user_account.balance}
+        ''')
+        time.sleep(2)
         proceed(user_account)
     elif option == 4:
+        time.sleep(2)
         welcome()
     else:
         raise ValueError('Please enter a number [1-4]')
 
 def proceed(user_account):
 
-    print('\nWould you like to continue?')
-    print('\nPlease choose one of the following options:')
-    print('\n[1] Continue')
-    print('[2] Exit')
+    characters('''
+    Would you like to continue?
 
+    Please choose one of the following options:
+
+    [1] Continue
+    [2] Exit
+    ''')
+    
     option = int(input('\n>> '))
 
     if option == 1:
