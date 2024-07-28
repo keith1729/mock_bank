@@ -366,10 +366,10 @@ class BankAccount:
 
 def create_new_acc():
 
-    print('\nTo create a new account please enter a username:')
+    print('\nTo create a new account please enter a Username:')
     username = input('\n>> ')
 
-    print(f'\nGenerating new account number and new pin for {username}...')
+    print(f'\nGenerating new Account Number and new Pin for {username}!')
     account_number = 'AC-' + str(random.randint(1000000, 9999999))
     pin = str(random.randint(1000, 9999))
 
@@ -407,12 +407,10 @@ def login():
         print('\nValidating Username and Pin...')
 
         if username_entered == username_entered_row_username and pin_entered == username_entered_row_pin:
-            print('\nLogin Successful!')
             user_account = BankAccount(username = username_entered_row_username, account_number = username_entered_row_account_number, pin = username_entered_row_pin, balance = username_entered_row_balance)
-            print(user_account.username)
-            print(user_account.account_number)
-            print(user_account.pin)
-            print(user_account.balance)
+            print('\nLogin Successful!')
+            print(f'\nWelcome {user_account.username}!')
+           
         else:
             print('Cannot login! Try again...')
     except:
@@ -424,32 +422,35 @@ def options(user_account):
     print('\nPlease choose one of the following options:')
     print('\n[1] Deposit')
     print('[2] Withdraw')
-    print('[3] Show Balance')
+    print('[3] Show Account Details')
     print('[4] Exit')
 
     option = int(input('\n>> '))
 
     if option == 1:
-
         deposit_amount = float(input('\nEnter your deposit amount: €'))
         user_account.deposit(deposit_amount)
-
-        print(f'\nSuccessful deposit!')
-        print(f'\nNew balance: €{user_account.balance}')
-
+        print(f'\nSuccessful Deposit!')
+        print(f'\nNew Balance: €{user_account.balance}\n')
         cell = accounts_worksheet.find(user_account.username)
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
-
     elif option == 2:
-        pass
+        withdraw_amount = float(input('\nEnter your withdraw amount: €'))
+        user_account.withdraw(withdraw_amount)
+        print(f'\nSuccessful Withdrawal!')
+        print(f'\nNew Balance: €{user_account.balance}\n')
+        cell = accounts_worksheet.find(user_account.username)
+        accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
     elif option == 3:
-        pass
+        print('\nYour Account Details are as follows:')
+        print(f'\nUsername: {user_account.username}')        
+        print(f'Account Number: {user_account.account_number}')
+        print(f'Pin: {user_account.pin}')
+        print(f'Current Balance: €{user_account.balance}\n')
     elif option == 4:
-        pass
+        welcome()
     else:
         raise ValueError('Please enter a number [1-4]')
-    login()
-
 
 def welcome():
 
