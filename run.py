@@ -44,7 +44,6 @@
 
 # welcome()
 
-
 import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
@@ -52,9 +51,7 @@ import pytz
 import time
 import random
 import sys
-# import colorama
 from colorama import Fore
-
 
 # Code taken from the love-sandwiches project 
 SCOPE = [
@@ -117,17 +114,19 @@ class BankAccount:
 def create_new_acc():
 
     time.sleep(2)
-    characters('''
+    print(f'''{Fore.YELLOW}{logo}''')
+    time.sleep(2)
+    characters(f'''{Fore.WHITE}
     To create a new account please enter a Username:
     ''')
-    # print('\nTo create a new account please enter a Username:')
+
     username = input('\n>> ')
 
     time.sleep(3)
     characters(f'''
     Generating new Account Number and new Pin for {username}...
     ''')
-    # print(f'\nGenerating new Account Number and new Pin for {username}!')
+
     account_number = 'AC-' + str(random.randint(1000000, 9999999))
     pin = str(random.randint(1000, 9999))
 
@@ -141,20 +140,20 @@ def create_new_acc():
     Pin: {user_account.pin}
     Balance: {user_account.balance}
     ''')
-    # print(f'\nUsername: {user_account.username}')
-    # print(f'Account Number: {user_account.account_number}')
-    # print(f'Pin: {user_account.pin}')
-    # print(f'Balance: {user_account.balance}\n')
 
     accounts_worksheet = SHEET.worksheet('accounts')
     accounts_worksheet.append_row([user_account.username, user_account.account_number, user_account.pin, user_account.balance])
 
+    proceed(user_account)
+    time.sleep(8)
     login()
 
 def login():
 
     time.sleep(2)
-    characters('\nPlease login with Username and Pin!\n')
+    print(f'''{Fore.YELLOW}{logo}''')
+    time.sleep(2)
+    characters(f'''{Fore.WHITE}\nPlease login with Username and Pin!\n''')
 
     username_entered = input('\nEnter Username: ')
     time.sleep(1)
@@ -178,7 +177,7 @@ def login():
             user_account = BankAccount(username = username_entered_row_username, account_number = username_entered_row_account_number, pin = username_entered_row_pin, balance = username_entered_row_balance)
             time.sleep(6)
             print('\nLogin Successful!')
-           
+            time.sleep(6)           
         else:
             print('Cannot login! Try again...')
     except:
@@ -188,8 +187,10 @@ def login():
 
 def options(user_account):
 
-    time.sleep(3)
-    characters(f'''
+    time.sleep(2)
+    print(f'''{Fore.YELLOW}{logo}''')
+    time.sleep(2)
+    characters(f'''{Fore.WHITE}
     Welcome {user_account.username}!
         
     Please choose one of the following options:
@@ -198,16 +199,20 @@ def options(user_account):
     [2] Withdraw
     [3] Show Account Details
     [4] Exit
-    ''')    
+    ''')
 
     option = int(input('\n>> '))
 
     if option == 1:
         time.sleep(2)
+        print(f'''{Fore.YELLOW}{logo}''')
+        time.sleep(2)
+        characters(f'''{Fore.WHITE}\nTo deposit into {user_account.username}'s account
+        ''')
         deposit_amount = float(input('\nEnter your deposit amount: €'))
         user_account.deposit(deposit_amount)
         time.sleep(3)
-        print(f'\nDeposit Successful!')
+        print('\nDeposit Successful!')
         time.sleep(2)
         print(f'\nNew Balance: €{user_account.balance}\n')
         cell = accounts_worksheet.find(user_account.username)
