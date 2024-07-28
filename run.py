@@ -53,7 +53,6 @@ import random
 import sys
 from colorama import Fore
 
-# Code taken from the love-sandwiches project 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -87,7 +86,7 @@ def characters(text):
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
-        time.sleep(0.015)
+        time.sleep(0.01)
 
 class BankAccount:
 
@@ -153,31 +152,33 @@ def login():
     time.sleep(2)
     print(f'''{Fore.YELLOW}{logo}''')
     time.sleep(2)
-    characters(f'''{Fore.WHITE}\nPlease login with Username and Pin!\n''')
-
-    username_entered = input('\nEnter Username: ')
+    characters(f'''{Fore.WHITE}
+    Please login with Username and Pin!
+    ''')
+    username_entered = input('\n    Enter Username: ')
     time.sleep(1)
-    pin_entered = input('\nEnter Pin: ')
+    pin_entered = input('\n    Enter Pin: ')
 
     try:
-        # Find the row where the username matches
         username_entered_cell = accounts_worksheet.find(username_entered)
         username_entered_row = username_entered_cell.row
 
-        # Get the data from the same row
         username_entered_row_username = accounts_worksheet.cell(username_entered_row, 1).value
         username_entered_row_account_number = accounts_worksheet.cell(username_entered_row, 2).value
         username_entered_row_pin = accounts_worksheet.cell(username_entered_row, 3).value
         username_entered_row_balance = accounts_worksheet.cell(username_entered_row, 4).value
 
         time.sleep(1)
-        characters('\nValidating Username and Pin...\n')
+        characters('''
+    Validating Username and Pin...''')
 
         if username_entered == username_entered_row_username and pin_entered == username_entered_row_pin:
             user_account = BankAccount(username = username_entered_row_username, account_number = username_entered_row_account_number, pin = username_entered_row_pin, balance = username_entered_row_balance)
             time.sleep(6)
-            print('\nLogin Successful!')
-            time.sleep(6)           
+            characters('''
+    Login Successful!
+            ''')
+            time.sleep(4)           
         else:
             print('Cannot login! Try again...')
     except:
@@ -207,14 +208,19 @@ def options(user_account):
         time.sleep(2)
         print(f'''{Fore.YELLOW}{logo}''')
         time.sleep(2)
-        characters(f'''{Fore.WHITE}\nTo deposit into {user_account.username}'s account
+        characters(f'''{Fore.WHITE}
+    To deposit into {user_account.username}'s account
         ''')
-        deposit_amount = float(input('\nEnter your deposit amount: €'))
+        deposit_amount = float(input('\n    Enter your deposit amount: €'))
         user_account.deposit(deposit_amount)
         time.sleep(3)
-        print('\nDeposit Successful!')
+        characters('''
+    Deposit Successful!
+        ''')
         time.sleep(2)
-        print(f'\nNew Balance: €{user_account.balance}\n')
+        characters(f'''
+    New Balance: €{user_account.balance}    
+        ''')
         cell = accounts_worksheet.find(user_account.username)
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
         proceed(user_account)
@@ -222,19 +228,23 @@ def options(user_account):
         time.sleep(2)
         print(f'''{Fore.YELLOW}{logo}''')
         time.sleep(2)
-        characters(f'''{Fore.WHITE}\nTo withdraw from {user_account.username}'s account
+        characters(f'''{Fore.WHITE}
+    To withdraw from {user_account.username}'s account
         ''')
-        withdraw_amount = float(input('\nEnter your withdraw amount: €'))
+        withdraw_amount = float(input('\n    Enter your withdraw amount: €'))
         user_account.withdraw(withdraw_amount)
         time.sleep(3)
-        print(f'\nWithdrawal Successful!')
+        characters('''
+    Withdrawal Successful!
+        ''')
         time.sleep(2)
-        print(f'\nNew Balance: €{user_account.balance}\n')
+        characters(f'''
+    New Balance: €{user_account.balance}
+        ''')
         cell = accounts_worksheet.find(user_account.username)
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
         proceed(user_account)
     elif option == 3:
-
         time.sleep(2)
         print(f'''{Fore.YELLOW}{logo}''')
         time.sleep(2)
@@ -246,11 +256,14 @@ def options(user_account):
     Pin: {user_account.pin}
     Current Balance: €{user_account.balance}
     ''')
-
         time.sleep(2)
         proceed(user_account)
     elif option == 4:
         time.sleep(2)
+        characters(f'''
+    Thank you {user_account.username} for using The Bank!
+        
+        ''')
         welcome()
     else:
         raise ValueError('Please enter a number [1-4]')
@@ -275,21 +288,11 @@ def proceed(user_account):
 
 def welcome():
 
-    characters(f'''{Fore.YELLOW}
- /$$$$$$$$ /$$                       /$$$$$$$                      /$$      
-|__  $$__/| $$                      | $$__  $$                    | $$      
-   | $$   | $$$$$$$   /$$$$$$       | $$  \\ $$  /$$$$$$  /$$$$$$$ | $$   /$$
-   | $$   | $$__  $$ /$$__  $$      | $$$$$$$  |____  $$| $$__  $$| $$  /$$/
-   | $$   | $$  \\ $$| $$$$$$$$      | $$__  $$  /$$$$$$$| $$  \\ $$| $$$$$$/ 
-   | $$   | $$  | $$| $$_____/      | $$  \\ $$ /$$__  $$| $$  | $$| $$_  $$ 
-   | $$   | $$  | $$|  $$$$$$$      | $$$$$$$/|  $$$$$$$| $$  | $$| $$ \\  $$
-   |__/   |__/  |__/ \\_______/      |_______/  \\_______/|__/  |__/|__/  \\__/
-''')
-    
+    characters(f'''{Fore.YELLOW}{logo}''')
     time.sleep(2)
-    print(f'{Fore.WHITE}\nWelcome to The Bank! {current_time_date()}')
-    time.sleep(3)
-    characters(f'''
+    characters(f'''{Fore.WHITE}
+    Welcome to The Bank! {current_time_date()}
+
     Please choose an option:
 
     [1] Login
