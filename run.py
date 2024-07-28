@@ -438,10 +438,7 @@ def options(user_account):
         print(f'New balance: €{user_account.balance}')
 
         cell = accounts_worksheet.find(user_account.username)
-        accounts_worksheet.update(cell.row, 4, user_account.balance)
-
-        # accounts_worksheet = SHEET.worksheet('accounts')
-        # accounts_worksheet.append_row([user_account.balance])
+        accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
 
     elif option == 2:
         pass
