@@ -369,13 +369,13 @@ def create_new_acc():
     print('\nTo create a new account please enter a username:')
     username = input('\n>> ')
 
-    print('\nGenerating new account number and new pin for ...')
+    print(f'\nGenerating new account number and new pin for {username}...')
     account_number = 'AC-' + str(random.randint(1000000, 9999999))
     pin = str(random.randint(1000, 9999))
 
     balance = 0
 
-    # user_account = BankAccount(username = username, account_number = account_number, pin = pin, balance = balance)
+    user_account = BankAccount(username = username, account_number = account_number, pin = pin, balance = balance)
     print(f'\nUsername: {user_account.username}')
     print(f'\nAccount Number: {user_account.account_number}')
     print(f'\nPin: {user_account.pin}')
@@ -431,11 +431,11 @@ def options(user_account):
 
     if option == 1:
 
-        deposit_amount = float(input('\nEnter your deposit amount: '))
+        deposit_amount = float(input('\nEnter your deposit amount: €'))
         user_account.deposit(deposit_amount)
 
         print(f'\nSuccessful deposit!')
-        print(f'New balance: €{user_account.balance}')
+        print(f'\nNew balance: €{user_account.balance}')
 
         cell = accounts_worksheet.find(user_account.username)
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
