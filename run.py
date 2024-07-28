@@ -51,6 +51,10 @@ from datetime import datetime
 import pytz
 import time
 import random
+import sys
+# import colorama
+from colorama import Fore
+
 
 # Code taken from the love-sandwiches project 
 SCOPE = [
@@ -81,6 +85,13 @@ def current_time_date():
     local_tz = pytz.timezone('Europe/Dublin')
     current_tz = datetime.now(local_tz).strftime('(%H:%M:%S, %d-%m-%Y)')
     return current_tz
+
+def characters(text):
+    """ Delays the output of characters on terminal by some milliseconds"""
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(0.02)
 
 class BankAccount:
 
@@ -128,9 +139,11 @@ def create_new_acc():
 
 def login():
 
-    print('\nPlease login with Username and Pin!')
+    time.sleep(2)
+    characters('\nPlease login with Username and Pin!\n')
 
     username_entered = input('\nEnter Username: ')
+    time.sleep(1)
     pin_entered = input('\nEnter Pin: ')
 
     try:
@@ -144,10 +157,12 @@ def login():
         username_entered_row_pin = accounts_worksheet.cell(username_entered_row, 3).value
         username_entered_row_balance = accounts_worksheet.cell(username_entered_row, 4).value
 
-        print('\nValidating Username and Pin...')
+        time.sleep(1)
+        characters('\nValidating Username and Pin...\n')
 
         if username_entered == username_entered_row_username and pin_entered == username_entered_row_pin:
             user_account = BankAccount(username = username_entered_row_username, account_number = username_entered_row_account_number, pin = username_entered_row_pin, balance = username_entered_row_balance)
+            time.sleep(8)
             print('\nLogin Successful!')
            
         else:
@@ -158,28 +173,39 @@ def login():
     options(user_account)
 
 def options(user_account):
-            
-    print(f'\nWelcome {user_account.username}!')
-    print('Please choose one of the following options:')
-    print('\n[1] Deposit')
-    print('[2] Withdraw')
-    print('[3] Show Account Details')
-    print('[4] Exit')
+
+    time.sleep(3)
+    characters(f'''
+    Welcome {user_account.username}!
+        
+    Please choose one of the following options:
+
+    [1] Deposit
+    [2] Withdraw
+    [3] Show Account Details
+    [4] Exit
+    ''')    
 
     option = int(input('\n>> '))
 
     if option == 1:
+        time.sleep(2)
         deposit_amount = float(input('\nEnter your deposit amount: €'))
         user_account.deposit(deposit_amount)
-        print(f'\nSuccessful Deposit!')
+        time.sleep(3)
+        print(f'\nDeposit Successful!')
+        time.sleep(2)
         print(f'\nNew Balance: €{user_account.balance}\n')
         cell = accounts_worksheet.find(user_account.username)
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
         proceed(user_account)
     elif option == 2:
+        time.sleep(2)
         withdraw_amount = float(input('\nEnter your withdraw amount: €'))
         user_account.withdraw(withdraw_amount)
-        print(f'\nSuccessful Withdrawal!')
+        time.sleep(3)
+        print(f'\nWithdrawal Successful!')
+        time.sleep(2)
         print(f'\nNew Balance: €{user_account.balance}\n')
         cell = accounts_worksheet.find(user_account.username)
         accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
@@ -212,12 +238,29 @@ def proceed(user_account):
 
 def welcome():
 
-    print(logo)
-    print(f'\nWelcome to The Bank! {current_time_date()}')
-    print('\nPlease choose an option:')
-    print('\n[1] Login')
-    print('[2] Create New Account')
+    characters(f'''{Fore.YELLOW}
+ /$$$$$$$$ /$$                       /$$$$$$$                      /$$      
+|__  $$__/| $$                      | $$__  $$                    | $$      
+   | $$   | $$$$$$$   /$$$$$$       | $$  \\ $$  /$$$$$$  /$$$$$$$ | $$   /$$
+   | $$   | $$__  $$ /$$__  $$      | $$$$$$$  |____  $$| $$__  $$| $$  /$$/
+   | $$   | $$  \\ $$| $$$$$$$$      | $$__  $$  /$$$$$$$| $$  \\ $$| $$$$$$/ 
+   | $$   | $$  | $$| $$_____/      | $$  \\ $$ /$$__  $$| $$  | $$| $$_  $$ 
+   | $$   | $$  | $$|  $$$$$$$      | $$$$$$$/|  $$$$$$$| $$  | $$| $$ \\  $$
+   |__/   |__/  |__/ \\_______/      |_______/  \\_______/|__/  |__/|__/  \\__/
+''')
+    
+    time.sleep(2)
+    print(f'{Fore.WHITE}\nWelcome to The Bank! {current_time_date()}')
+    time.sleep(3)
+    characters(f'''
+    Please choose an option:
+
+    [1] Login
+    [2] Create New Account
+    ''')
+    
     login_option = int(input('\n>> '))
+    
     if login_option == 1:
         login()
     elif login_option == 2:
