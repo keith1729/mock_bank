@@ -116,15 +116,29 @@ class BankAccount:
 
 def create_new_acc():
 
-    clear_screen()
-    time.sleep(2)
-    print(f'''{Fore.YELLOW}{logo}''')
-    time.sleep(2)
-    characters(f'''{Fore.WHITE}
+    while True:
+        try:
+            clear_screen()
+            time.sleep(2)
+            print(f'''{Fore.YELLOW}{logo}''')
+            time.sleep(2)
+            characters(f'''{Fore.WHITE}
     To create a new account please enter a Username:
-    ''')
+            ''')
 
-    username = input('\n>> ')
+            username = input('\n>> ')
+
+            # Validate username (you can add more checks here)
+            if username.strip():  # Check if not empty
+                break
+            else:
+                print('\nYou cannot have an empty Username!\n')
+                time.sleep(4)
+                create_new_acc()
+        except ValueError:
+            print('\nInput a valid Username!\n')
+            time.sleep(4)
+            create_new_acc()
 
     time.sleep(3)
     characters(f'''
@@ -176,8 +190,8 @@ def login():
 
         time.sleep(1)
         characters('''
-    Validating Username and Pin...''')
-
+    Validating Username and Pin...
+    ''')
         if username_entered == username_entered_row_username and pin_entered == username_entered_row_pin:
             user_account = BankAccount(username = username_entered_row_username, account_number = username_entered_row_account_number, pin = username_entered_row_pin, balance = username_entered_row_balance)
             time.sleep(6)
@@ -194,140 +208,171 @@ def login():
 
 def options(user_account):
 
-    clear_screen()
-    time.sleep(2)
-    print(f'''{Fore.YELLOW}{logo}''')
-    time.sleep(2)
-    characters(f'''{Fore.WHITE}
+    while True:
+        try:
+            clear_screen()
+            time.sleep(2)
+            print(f'''{Fore.YELLOW}{logo}''')
+            time.sleep(2)
+            characters(f'''{Fore.WHITE}
     Welcome {user_account.username}!
-        
+                
     Please choose one of the following options:
 
     [1] Deposit
     [2] Withdraw
     [3] Show Account Details
     [4] Exit
-    ''')
+            ''')
 
-    option = int(input('\n>> '))
+            option = int(input('\n>> '))
 
-    if option == 1:
-        clear_screen()
-        time.sleep(2)
-        print(f'''{Fore.YELLOW}{logo}''')
-        time.sleep(2)
-        characters(f'''{Fore.WHITE}
+            if option == 1:
+                clear_screen()
+                time.sleep(2)
+                print(f'''{Fore.YELLOW}{logo}''')
+                time.sleep(2)
+                characters(f'''{Fore.WHITE}
     To deposit into {user_account.username}'s account
-        ''')
-        deposit_amount = float(input('\n    Enter your deposit amount: €'))
-        user_account.deposit(deposit_amount)
-        time.sleep(3)
-        characters('''
+                ''')
+                deposit_amount = float(input('\n    Enter your deposit amount: €'))
+                user_account.deposit(deposit_amount)
+                time.sleep(3)
+                characters('''
     Deposit Successful!
-        ''')
-        time.sleep(2)
-        characters(f'''
+                ''')
+                time.sleep(2)
+                characters(f'''
     New Balance: €{user_account.balance}    
-        ''')
-        cell = accounts_worksheet.find(user_account.username)
-        accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
-        proceed(user_account)
-    elif option == 2:
-        clear_screen()
-        time.sleep(2)
-        print(f'''{Fore.YELLOW}{logo}''')
-        time.sleep(2)
-        characters(f'''{Fore.WHITE}
+                ''')
+                cell = accounts_worksheet.find(user_account.username)
+                accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
+                proceed(user_account)
+                break
+            elif option == 2:
+                clear_screen()
+                time.sleep(2)
+                print(f'''{Fore.YELLOW}{logo}''')
+                time.sleep(2)
+                characters(f'''{Fore.WHITE}
     To withdraw from {user_account.username}'s account
-        ''')
-        withdraw_amount = float(input('\n    Enter your withdraw amount: €'))
-        user_account.withdraw(withdraw_amount)
-        time.sleep(3)
-        characters('''
+                ''')
+                withdraw_amount = float(input('\n    Enter your withdraw amount: €'))
+                user_account.withdraw(withdraw_amount)
+                time.sleep(3)
+                characters('''
     Withdrawal Successful!
-        ''')
-        time.sleep(2)
-        characters(f'''
+                ''')
+                time.sleep(2)
+                characters(f'''
     New Balance: €{user_account.balance}
-        ''')
-        cell = accounts_worksheet.find(user_account.username)
-        accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
-        proceed(user_account)
-    elif option == 3:
-        clear_screen()
-        time.sleep(2)
-        print(f'''{Fore.YELLOW}{logo}''')
-        time.sleep(2)
-        characters(f'''{Fore.WHITE}
+                ''')
+                cell = accounts_worksheet.find(user_account.username)
+                accounts_worksheet.update_cell(cell.row, 4, user_account.balance)
+                proceed(user_account)
+                break
+            elif option == 3:
+                clear_screen()
+                time.sleep(2)
+                print(f'''{Fore.YELLOW}{logo}''')
+                time.sleep(2)
+                characters(f'''{Fore.WHITE}
     {user_account.username} your Account Details are as follows:
 
     Username: {user_account.username}
     Account Number: {user_account.account_number}
     Pin: {user_account.pin}
     Current Balance: €{user_account.balance}
-    ''')
-        time.sleep(2)
-        proceed(user_account)
-    elif option == 4:
-        clear_screen()
-        time.sleep(2)
-        print(f'''{Fore.YELLOW}{logo}''')
-        time.sleep(2)
-        characters(f'''
+                ''')
+                time.sleep(2)
+                proceed(user_account)
+                break
+            elif option == 4:
+                clear_screen()
+                time.sleep(2)
+                print(f'''{Fore.YELLOW}{logo}''')
+                time.sleep(2)
+                characters(f'''{Fore.WHITE}
     Thank you {user_account.username} for using The Bank!
-        
-        ''')
-        time.sleep(6)
-        welcome()
-    else:
-        raise ValueError('Please enter a number [1-4]')
+                
+                ''')
+                time.sleep(6)
+                welcome()
+                break
+            else:
+                print('\nPlease enter a valid option (1-4)\n')
+                time.sleep(4)
+                options(user_account)
+        except ValueError:
+            print('\nInvalid input. Please enter a number (1-4)\n')
+            time.sleep(4)
+            options(user_account)
 
 def proceed(user_account):
-
-    characters('''
+    while True:
+        try:
+            characters('''
     Would you like to continue to your options page?
 
     Please choose one of the following:
 
     [1] Options
     [2] Exit
-    ''')
-    
-    option = int(input('\n>> '))
+            ''')
+            
+            option = int(input('\n>> '))
 
-    if option == 1:
-        options(user_account)
-    elif option ==2:
-        characters(f'''
+            if option == 1:
+                options(user_account)
+                break
+            elif option ==2:
+                characters(f'''
     Thank you {user_account.username} for using The Bank!
-        
-        ''')
-        time.sleep(6)
-        welcome()
+                
+                ''')
+                time.sleep(6)
+                welcome()
+                break
+            else:
+                print('\nPlease enter a valid option (1-2)\n')
+                time.sleep(4)
+                proceed(user_account)
+        except ValueError:
+            print('\nInvalid input. Please enter a number (1-2)\n')
+            time.sleep(4)
+            proceed(user_account)
 
 def welcome():
-
-    clear_screen()
-    characters(f'''{Fore.YELLOW}{logo}''')
-    time.sleep(2)
-    characters(f'''{Fore.WHITE}
+    while True:
+        try:
+            clear_screen()
+            characters(f'''{Fore.YELLOW}{logo}''')
+            time.sleep(2)
+            characters(f'''{Fore.WHITE}
     Welcome to The Bank! {current_time_date()}
 
     Please choose an option:
 
     [1] Login
     [2] Create New Account
-    ''')
-    
-    login_option = int(input('\n>> '))
-    
-    if login_option == 1:
-        login()
-    elif login_option == 2:
-        create_new_acc()
-    else:
-        raise ValueError('Please choose option [1] Login or [2] Create New Account')
-        welcome()
+            ''')
+            
+            login_option = int(input('\n>> '))
+            
+            if login_option == 1:
+                login()
+                break
+            elif login_option == 2:
+                create_new_acc()
+                break
+            else:
+                print("\nPlease choose a valid option (1 or 2)\n")
+                time.sleep(4)
+                welcome()
+        except ValueError:
+            print('\nInvalid input. Please enter a number (1 or 2)\n')
+            time.sleep(4)
+            welcome()
 
 welcome()
 
